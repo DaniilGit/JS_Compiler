@@ -1,2 +1,2 @@
-./src/grammar/build-antlr-lexer
-./src/grammar/.antlr
+/src/grammar/build-antlr-lexer
+/src/grammar/.antlr
