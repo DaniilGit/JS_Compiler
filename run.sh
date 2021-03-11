@@ -1,4 +1,3 @@
 #!/bin/bash
 
-cd src
-python3 lexer/lexer.py ../example/test.js
+python3 src/lexer/lexer.py example/example1.js

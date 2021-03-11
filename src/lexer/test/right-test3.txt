@@ -1,0 +1,17 @@
+Loc=<1:5>  CONST const
+Loc=<1:9>  ID str
+Loc=<1:11>  ASSIGN =
+Loc=<1:26>  STRING "Hello World!"
+Loc=<1:27>  SEMI ;
+Loc=<3:7>  ID console
+Loc=<3:8>  DOT .
+Loc=<3:11>  ID log
+Loc=<3:12>  L_ROUND (
+Loc=<3:15>  ID str
+Loc=<3:16>  DOT .
+Loc=<3:24>  ID includes
+Loc=<3:25>  L_ROUND (
+Loc=<3:32>  STRING "World"
+Loc=<3:33>  R_ROUND )
+Loc=<3:34>  R_ROUND )
+Loc=<3:35>  SEMI ;
