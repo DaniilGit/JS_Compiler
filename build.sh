@@ -2,15 +2,11 @@
 
 cd src/grammar
 
-antlr4 -Dlanguage=Python3 JSLexer.g4
+mkdir build-antlr-lexer
+antlr4 -o ./build-antlr-lexer -Dlanguage=Python3 JSLexer.g4
 
 mkdir antlr-runtime-python
-pip3 install --target "./antlr-runtime-python" antlr4-python3-runtime
-
-mkdir build-antlr-lexer
-mv JSLexer.interp ./build-antlr-lexer
-mv JSLexer.py ./build-antlr-lexer
-mv JSLexer.tokens ./build-antlr-lexer
+pip3 install --target ./antlr-runtime-python antlr4-python3-runtime
 
 cd build-antlr-lexer
 touch __init__.py
