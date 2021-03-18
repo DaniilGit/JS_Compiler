@@ -1,8 +1,6 @@
 import sys
 sys.path.append('src/grammar/build-antlr-lexer')
-sys.path.append('src/grammar/antlr-runtime-python')
 from JSLexer import JSLexer
-from typing.io import TextIO
 import argparse
 from antlr4 import *
 
