@@ -3,7 +3,7 @@ import pytest
 sys.path.append('src/grammar/build-antlr-lexer')
 sys.path.append('src/lexer')
 from JSLexer import JSLexer
-from lexer import java_script_lexer
+from lexer import javascript_lexer
 from antlr4 import *
 
 test_paths = [
@@ -15,5 +15,5 @@ output = "src/lexer/test/output.txt"
 
 @pytest.mark.parametrize("input,expected", test_paths)
 def test_lexer(input, expected):
-  java_script_lexer(input, output)
+  javascript_lexer(input, output)
   assert ([row for row in open(output)] == [row for row in open(expected)])

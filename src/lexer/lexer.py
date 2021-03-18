@@ -4,7 +4,7 @@ from JSLexer import JSLexer
 import argparse
 from antlr4 import *
 
-def java_script_lexer(input, output):
+def javascript_lexer(input, output):
   input_stream = FileStream(input)
   lexer = JSLexer(input_stream)
 
@@ -23,7 +23,7 @@ def main():
   parser.add_argument("output", type=str, help="Path to output file", metavar="Output file",)
   args = parser.parse_args()
 
-  java_script_lexer(args.input, args.output)
+  javascript_lexer(args.input, args.output)
  
 if __name__ == '__main__':
   main()
