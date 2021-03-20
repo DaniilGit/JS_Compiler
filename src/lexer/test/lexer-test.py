@@ -1,8 +1,7 @@
 import sys
 import pytest
-sys.path.append('src/grammar/build-antlr-lexer')
 sys.path.append('src/lexer')
-from JSLexer import JSLexer
+from build_antlr_lexer.JSLexer import JSLexer
 from lexer import javascript_lexer
 from antlr4 import *
 

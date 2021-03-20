@@ -1,7 +1,6 @@
 import sys
-sys.path.append('src/grammar/build-antlr-lexer')
-from JSLexer import JSLexer
 import argparse
+from build_antlr_lexer.JSLexer import JSLexer
 from antlr4 import *
 
 def javascript_lexer(input, output):
