@@ -1,4 +1,20 @@
-lexer grammar JSLexer;
+grammar JS;
+
+program
+  : function call_function
+  ;
+
+call_function
+  : ID L_ROUND R_ROUND SEMI
+  ;
+
+function
+  : FUNCTION ID L_ROUND R_ROUND L_FIGURE ID DOT ID L_ROUND string R_ROUND SEMI R_FIGURE
+  ;
+
+string
+  : STRING
+  ;
 
 CONST: 'const';
 LET: 'let';
@@ -7,13 +23,14 @@ FOR: 'for';
 WHILE: 'while';
 DO: 'do';
 RETURN: 'return';
+FUNCTION: 'function';
 IF: 'if';
 ELSE: 'else';
 TRUE: 'true';
 FALSE: 'false';
 STRING: '"' ~ ["\n\r]* '"';
-ID: ([a-z]|[A-Z]|[_$])(([0-9]|[a-z]|[A-Z])+)?;
-INT: [0-9]+;
+ID: ([a-zA-Z_$])([0-9a-zA-Z])*;
+INT: '0' | [1-9][0-9]*;
 L_ROUND: '(';
 R_ROUND: ')';
 L_FIGURE: '{';
