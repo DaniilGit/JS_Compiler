@@ -1,19 +1,44 @@
 import sys
 import argparse
+import json
 from antlr4 import *
+from antlr4.error.ErrorListener import ErrorListener
 from build_antlr.JSLexer import JSLexer
 from build_antlr.JSParser import JSParser
+from AstVisitor import AstVisitor
 from JSVisitor import JSVisitor
+
+class StreamErrorListener(ErrorListener):
+  def __init__(self):
+    self.errors = []
+
+  def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
+    print("line " + str(line) + ":" + str(column) + " " + msg)
+    self.errors.append({
+      "line": str(line),
+      "column": str(column),
+      "msg": msg
+    })
 
 def javascript_parser(input, output):
   input_stream = FileStream(input)
-  lexer = JSLexer(input_stream)
+  lexer = JSLexer(input_stream) 
   stream = CommonTokenStream(lexer)
   parser = JSParser(stream)
+
+  error_listener = StreamErrorListener()
+  parser.removeErrorListeners()
+  parser.addErrorListener(error_listener)
+
   tree = parser.program()
+
+  if bool(error_listener.errors):
+    return 
+
   ast = JSVisitor().visitProgram(tree)
-  # output.write(tree.toStringTree(recog=parser))
-  # output.write('\n')
+  result = AstVisitor().astVisitProgram(ast)
+
+  print(json.dumps(result, indent=2))
 
 def main():
   parser = argparse.ArgumentParser()

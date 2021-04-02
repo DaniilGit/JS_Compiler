@@ -1,19 +1,24 @@
 grammar JS;
 
 program
-  : function call_function
+  : function_declaration* statement*
   ;
 
-call_function
+function_declaration
+  : FUNCTION ID L_ROUND R_ROUND L_FIGURE statement+ R_FIGURE
+  ;
+
+statement
+  : function_call
+  | method_call
+  ;
+
+function_call
   : ID L_ROUND R_ROUND SEMI
   ;
 
-function
-  : FUNCTION ID L_ROUND R_ROUND L_FIGURE ID DOT ID L_ROUND string R_ROUND SEMI R_FIGURE
-  ;
-
-string
-  : STRING
+method_call
+  : ID DOT ID L_ROUND STRING R_ROUND SEMI
   ;
 
 CONST: 'const';

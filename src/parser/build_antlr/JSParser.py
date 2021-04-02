@@ -8,17 +8,23 @@ import sys
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\65")
-        buf.write("#\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\3\2\3\2\3\2\3\3\3\3")
-        buf.write("\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3")
-        buf.write("\4\3\4\3\4\3\4\3\5\3\5\3\5\2\2\6\2\4\6\b\2\2\2\36\2\n")
-        buf.write("\3\2\2\2\4\r\3\2\2\2\6\22\3\2\2\2\b \3\2\2\2\n\13\5\6")
-        buf.write("\4\2\13\f\5\4\3\2\f\3\3\2\2\2\r\16\7\20\2\2\16\17\7\22")
-        buf.write("\2\2\17\20\7\23\2\2\20\21\7 \2\2\21\5\3\2\2\2\22\23\7")
-        buf.write("\n\2\2\23\24\7\20\2\2\24\25\7\22\2\2\25\26\7\23\2\2\26")
-        buf.write("\27\7\24\2\2\27\30\7\20\2\2\30\31\7\36\2\2\31\32\7\20")
-        buf.write("\2\2\32\33\7\22\2\2\33\34\5\b\5\2\34\35\7\23\2\2\35\36")
-        buf.write("\7 \2\2\36\37\7\25\2\2\37\7\3\2\2\2 !\7\17\2\2!\t\3\2")
-        buf.write("\2\2\2")
+        buf.write("\66\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\7\2\16")
+        buf.write("\n\2\f\2\16\2\21\13\2\3\2\7\2\24\n\2\f\2\16\2\27\13\2")
+        buf.write("\3\3\3\3\3\3\3\3\3\3\3\3\6\3\37\n\3\r\3\16\3 \3\3\3\3")
+        buf.write("\3\4\3\4\5\4\'\n\4\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6")
+        buf.write("\3\6\3\6\3\6\3\6\3\6\2\2\7\2\4\6\b\n\2\2\2\64\2\17\3\2")
+        buf.write("\2\2\4\30\3\2\2\2\6&\3\2\2\2\b(\3\2\2\2\n-\3\2\2\2\f\16")
+        buf.write("\5\4\3\2\r\f\3\2\2\2\16\21\3\2\2\2\17\r\3\2\2\2\17\20")
+        buf.write("\3\2\2\2\20\25\3\2\2\2\21\17\3\2\2\2\22\24\5\6\4\2\23")
+        buf.write("\22\3\2\2\2\24\27\3\2\2\2\25\23\3\2\2\2\25\26\3\2\2\2")
+        buf.write("\26\3\3\2\2\2\27\25\3\2\2\2\30\31\7\n\2\2\31\32\7\20\2")
+        buf.write("\2\32\33\7\22\2\2\33\34\7\23\2\2\34\36\7\24\2\2\35\37")
+        buf.write("\5\6\4\2\36\35\3\2\2\2\37 \3\2\2\2 \36\3\2\2\2 !\3\2\2")
+        buf.write("\2!\"\3\2\2\2\"#\7\25\2\2#\5\3\2\2\2$\'\5\b\5\2%\'\5\n")
+        buf.write("\6\2&$\3\2\2\2&%\3\2\2\2\'\7\3\2\2\2()\7\20\2\2)*\7\22")
+        buf.write("\2\2*+\7\23\2\2+,\7 \2\2,\t\3\2\2\2-.\7\20\2\2./\7\36")
+        buf.write("\2\2/\60\7\20\2\2\60\61\7\22\2\2\61\62\7\17\2\2\62\63")
+        buf.write("\7\23\2\2\63\64\7 \2\2\64\13\3\2\2\2\6\17\25 &")
         return buf.getvalue()
 
 
@@ -53,11 +59,13 @@ class JSParser ( Parser ):
                       "REM_ASSIGN", "COM", "WS" ]
 
     RULE_program = 0
-    RULE_call_function = 1
-    RULE_function = 2
-    RULE_string = 3
+    RULE_function_declaration = 1
+    RULE_statement = 2
+    RULE_function_call = 3
+    RULE_method_call = 4
 
-    ruleNames =  [ "program", "call_function", "function", "string" ]
+    ruleNames =  [ "program", "function_declaration", "statement", "function_call", 
+                   "method_call" ]
 
     EOF = Token.EOF
     CONST=1
@@ -126,16 +134,30 @@ class JSParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def function(self):
-            return self.getTypedRuleContext(JSParser.FunctionContext,0)
+        def function_declaration(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(JSParser.Function_declarationContext)
+            else:
+                return self.getTypedRuleContext(JSParser.Function_declarationContext,i)
 
 
-        def call_function(self):
-            return self.getTypedRuleContext(JSParser.Call_functionContext,0)
+        def statement(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(JSParser.StatementContext)
+            else:
+                return self.getTypedRuleContext(JSParser.StatementContext,i)
 
 
         def getRuleIndex(self):
             return JSParser.RULE_program
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterProgram" ):
+                listener.enterProgram(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitProgram" ):
+                listener.exitProgram(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitProgram" ):
@@ -150,12 +172,29 @@ class JSParser ( Parser ):
 
         localctx = JSParser.ProgramContext(self, self._ctx, self.state)
         self.enterRule(localctx, 0, self.RULE_program)
+        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 8
-            self.function()
-            self.state = 9
-            self.call_function()
+            self.state = 13
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            while _la==JSParser.FUNCTION:
+                self.state = 10
+                self.function_declaration()
+                self.state = 15
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+
+            self.state = 19
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            while _la==JSParser.ID:
+                self.state = 16
+                self.statement()
+                self.state = 21
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -164,7 +203,160 @@ class JSParser ( Parser ):
             self.exitRule()
         return localctx
 
-    class Call_functionContext(ParserRuleContext):
+    class Function_declarationContext(ParserRuleContext):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def FUNCTION(self):
+            return self.getToken(JSParser.FUNCTION, 0)
+
+        def ID(self):
+            return self.getToken(JSParser.ID, 0)
+
+        def L_ROUND(self):
+            return self.getToken(JSParser.L_ROUND, 0)
+
+        def R_ROUND(self):
+            return self.getToken(JSParser.R_ROUND, 0)
+
+        def L_FIGURE(self):
+            return self.getToken(JSParser.L_FIGURE, 0)
+
+        def R_FIGURE(self):
+            return self.getToken(JSParser.R_FIGURE, 0)
+
+        def statement(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(JSParser.StatementContext)
+            else:
+                return self.getTypedRuleContext(JSParser.StatementContext,i)
+
+
+        def getRuleIndex(self):
+            return JSParser.RULE_function_declaration
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterFunction_declaration" ):
+                listener.enterFunction_declaration(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitFunction_declaration" ):
+                listener.exitFunction_declaration(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitFunction_declaration" ):
+                return visitor.visitFunction_declaration(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+
+
+    def function_declaration(self):
+
+        localctx = JSParser.Function_declarationContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 2, self.RULE_function_declaration)
+        self._la = 0 # Token type
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 22
+            self.match(JSParser.FUNCTION)
+            self.state = 23
+            self.match(JSParser.ID)
+            self.state = 24
+            self.match(JSParser.L_ROUND)
+            self.state = 25
+            self.match(JSParser.R_ROUND)
+            self.state = 26
+            self.match(JSParser.L_FIGURE)
+            self.state = 28 
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            while True:
+                self.state = 27
+                self.statement()
+                self.state = 30 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                if not (_la==JSParser.ID):
+                    break
+
+            self.state = 32
+            self.match(JSParser.R_FIGURE)
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+    class StatementContext(ParserRuleContext):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def function_call(self):
+            return self.getTypedRuleContext(JSParser.Function_callContext,0)
+
+
+        def method_call(self):
+            return self.getTypedRuleContext(JSParser.Method_callContext,0)
+
+
+        def getRuleIndex(self):
+            return JSParser.RULE_statement
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterStatement" ):
+                listener.enterStatement(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitStatement" ):
+                listener.exitStatement(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitStatement" ):
+                return visitor.visitStatement(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+
+
+    def statement(self):
+
+        localctx = JSParser.StatementContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 4, self.RULE_statement)
+        try:
+            self.state = 36
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
+            if la_ == 1:
+                self.enterOuterAlt(localctx, 1)
+                self.state = 34
+                self.function_call()
+                pass
+
+            elif la_ == 2:
+                self.enterOuterAlt(localctx, 2)
+                self.state = 35
+                self.method_call()
+                pass
+
+
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+    class Function_callContext(ParserRuleContext):
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -183,30 +375,38 @@ class JSParser ( Parser ):
             return self.getToken(JSParser.SEMI, 0)
 
         def getRuleIndex(self):
-            return JSParser.RULE_call_function
+            return JSParser.RULE_function_call
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterFunction_call" ):
+                listener.enterFunction_call(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitFunction_call" ):
+                listener.exitFunction_call(self)
 
         def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitCall_function" ):
-                return visitor.visitCall_function(self)
+            if hasattr( visitor, "visitFunction_call" ):
+                return visitor.visitFunction_call(self)
             else:
                 return visitor.visitChildren(self)
 
 
 
 
-    def call_function(self):
+    def function_call(self):
 
-        localctx = JSParser.Call_functionContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 2, self.RULE_call_function)
+        localctx = JSParser.Function_callContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 6, self.RULE_function_call)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 11
+            self.state = 38
             self.match(JSParser.ID)
-            self.state = 12
+            self.state = 39
             self.match(JSParser.L_ROUND)
-            self.state = 13
+            self.state = 40
             self.match(JSParser.R_ROUND)
-            self.state = 14
+            self.state = 41
             self.match(JSParser.SEMI)
         except RecognitionException as re:
             localctx.exception = re
@@ -216,14 +416,11 @@ class JSParser ( Parser ):
             self.exitRule()
         return localctx
 
-    class FunctionContext(ParserRuleContext):
+    class Method_callContext(ParserRuleContext):
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
-
-        def FUNCTION(self):
-            return self.getToken(JSParser.FUNCTION, 0)
 
         def ID(self, i:int=None):
             if i is None:
@@ -231,115 +428,61 @@ class JSParser ( Parser ):
             else:
                 return self.getToken(JSParser.ID, i)
 
-        def L_ROUND(self, i:int=None):
-            if i is None:
-                return self.getTokens(JSParser.L_ROUND)
-            else:
-                return self.getToken(JSParser.L_ROUND, i)
-
-        def R_ROUND(self, i:int=None):
-            if i is None:
-                return self.getTokens(JSParser.R_ROUND)
-            else:
-                return self.getToken(JSParser.R_ROUND, i)
-
-        def L_FIGURE(self):
-            return self.getToken(JSParser.L_FIGURE, 0)
-
         def DOT(self):
             return self.getToken(JSParser.DOT, 0)
 
-        def string(self):
-            return self.getTypedRuleContext(JSParser.StringContext,0)
-
-
-        def SEMI(self):
-            return self.getToken(JSParser.SEMI, 0)
-
-        def R_FIGURE(self):
-            return self.getToken(JSParser.R_FIGURE, 0)
-
-        def getRuleIndex(self):
-            return JSParser.RULE_function
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFunction" ):
-                return visitor.visitFunction(self)
-            else:
-                return visitor.visitChildren(self)
-
-
-
-
-    def function(self):
-
-        localctx = JSParser.FunctionContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 4, self.RULE_function)
-        try:
-            self.enterOuterAlt(localctx, 1)
-            self.state = 16
-            self.match(JSParser.FUNCTION)
-            self.state = 17
-            self.match(JSParser.ID)
-            self.state = 18
-            self.match(JSParser.L_ROUND)
-            self.state = 19
-            self.match(JSParser.R_ROUND)
-            self.state = 20
-            self.match(JSParser.L_FIGURE)
-            self.state = 21
-            self.match(JSParser.ID)
-            self.state = 22
-            self.match(JSParser.DOT)
-            self.state = 23
-            self.match(JSParser.ID)
-            self.state = 24
-            self.match(JSParser.L_ROUND)
-            self.state = 25
-            self.string()
-            self.state = 26
-            self.match(JSParser.R_ROUND)
-            self.state = 27
-            self.match(JSParser.SEMI)
-            self.state = 28
-            self.match(JSParser.R_FIGURE)
-        except RecognitionException as re:
-            localctx.exception = re
-            self._errHandler.reportError(self, re)
-            self._errHandler.recover(self, re)
-        finally:
-            self.exitRule()
-        return localctx
-
-    class StringContext(ParserRuleContext):
-
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
-            self.parser = parser
+        def L_ROUND(self):
+            return self.getToken(JSParser.L_ROUND, 0)
 
         def STRING(self):
             return self.getToken(JSParser.STRING, 0)
 
+        def R_ROUND(self):
+            return self.getToken(JSParser.R_ROUND, 0)
+
+        def SEMI(self):
+            return self.getToken(JSParser.SEMI, 0)
+
         def getRuleIndex(self):
-            return JSParser.RULE_string
+            return JSParser.RULE_method_call
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterMethod_call" ):
+                listener.enterMethod_call(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitMethod_call" ):
+                listener.exitMethod_call(self)
 
         def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitString" ):
-                return visitor.visitString(self)
+            if hasattr( visitor, "visitMethod_call" ):
+                return visitor.visitMethod_call(self)
             else:
                 return visitor.visitChildren(self)
 
 
 
 
-    def string(self):
+    def method_call(self):
 
-        localctx = JSParser.StringContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 6, self.RULE_string)
+        localctx = JSParser.Method_callContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 8, self.RULE_method_call)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 30
+            self.state = 43
+            self.match(JSParser.ID)
+            self.state = 44
+            self.match(JSParser.DOT)
+            self.state = 45
+            self.match(JSParser.ID)
+            self.state = 46
+            self.match(JSParser.L_ROUND)
+            self.state = 47
             self.match(JSParser.STRING)
+            self.state = 48
+            self.match(JSParser.R_ROUND)
+            self.state = 49
+            self.match(JSParser.SEMI)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
