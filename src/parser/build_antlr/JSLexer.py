@@ -28,7 +28,7 @@ def serializedATN():
         buf.write("\3\26\3\26\3\27\3\27\3\30\3\30\3\31\3\31\3\32\3\32\3\33")
         buf.write("\3\33\3\34\3\34\3\35\3\35\3\36\3\36\3\37\3\37\3 \3 \3")
         buf.write("!\3!\3\"\3\"\3\"\3#\3#\3#\3$\3$\3$\3%\3%\3%\3&\3&\3&\3")
-        buf.write("\'\3\'\3\'\3(\3(\3)\3)\3)\3*\3*\3*\3+\3+\3,\3,\3-\3-\3")
+        buf.write("\'\3\'\3(\3(\3(\3)\3)\3)\3*\3*\3*\3+\3+\3,\3,\3-\3-\3")
         buf.write(".\3.\3.\3/\3/\3/\3\60\3\60\3\60\3\61\3\61\3\61\3\62\3")
         buf.write("\62\3\62\3\63\3\63\3\63\3\63\7\63\u0117\n\63\f\63\16\63")
         buf.write("\u011a\13\63\3\63\3\63\3\63\3\63\3\63\7\63\u0121\n\63")
@@ -61,7 +61,7 @@ def serializedATN():
         buf.write("\3\2\2\2\67\u00d7\3\2\2\29\u00d9\3\2\2\2;\u00db\3\2\2")
         buf.write("\2=\u00dd\3\2\2\2?\u00df\3\2\2\2A\u00e1\3\2\2\2C\u00e3")
         buf.write("\3\2\2\2E\u00e6\3\2\2\2G\u00e9\3\2\2\2I\u00ec\3\2\2\2")
-        buf.write("K\u00ef\3\2\2\2M\u00f2\3\2\2\2O\u00f5\3\2\2\2Q\u00f7\3")
+        buf.write("K\u00ef\3\2\2\2M\u00f2\3\2\2\2O\u00f4\3\2\2\2Q\u00f7\3")
         buf.write("\2\2\2S\u00fa\3\2\2\2U\u00fd\3\2\2\2W\u00ff\3\2\2\2Y\u0101")
         buf.write("\3\2\2\2[\u0103\3\2\2\2]\u0106\3\2\2\2_\u0109\3\2\2\2")
         buf.write("a\u010c\3\2\2\2c\u010f\3\2\2\2e\u0127\3\2\2\2g\u012a\3")
@@ -109,8 +109,8 @@ def serializedATN():
         buf.write("\u00e8F\3\2\2\2\u00e9\u00ea\7#\2\2\u00ea\u00eb\7?\2\2")
         buf.write("\u00ebH\3\2\2\2\u00ec\u00ed\7?\2\2\u00ed\u00ee\7?\2\2")
         buf.write("\u00eeJ\3\2\2\2\u00ef\u00f0\7-\2\2\u00f0\u00f1\7-\2\2")
-        buf.write("\u00f1L\3\2\2\2\u00f2\u00f3\7/\2\2\u00f3\u00f4\7/\2\2")
-        buf.write("\u00f4N\3\2\2\2\u00f5\u00f6\t\7\2\2\u00f6P\3\2\2\2\u00f7")
+        buf.write("\u00f1L\3\2\2\2\u00f2\u00f3\t\7\2\2\u00f3N\3\2\2\2\u00f4")
+        buf.write("\u00f5\7/\2\2\u00f5\u00f6\7/\2\2\u00f6P\3\2\2\2\u00f7")
         buf.write("\u00f8\7(\2\2\u00f8\u00f9\7(\2\2\u00f9R\3\2\2\2\u00fa")
         buf.write("\u00fb\7~\2\2\u00fb\u00fc\7~\2\2\u00fcT\3\2\2\2\u00fd")
         buf.write("\u00fe\7#\2\2\u00feV\3\2\2\2\u00ff\u0100\7~\2\2\u0100")
@@ -180,8 +180,8 @@ class JSLexer(Lexer):
     NOT_EQUAL = 35
     EQUAL = 36
     INCREMENT = 37
-    DECREMENT = 38
-    TERNAR = 39
+    TERNAR = 38
+    DECREMENT = 39
     LOG_AND = 40
     LOG_OR = 41
     LOG_NOT = 42
@@ -213,7 +213,7 @@ class JSLexer(Lexer):
             "R_ROUND", "L_FIGURE", "R_FIGURE", "L_SQUARE", "R_SQUARE", "PLUS", 
             "MINUS", "ASSIGN", "MULTI", "DIV", "REM", "DOT", "COMMA", "SEMI", 
             "LESS", "GREATER", "LESS_EQUAL", "GREATER_EQUAL", "NOT_EQUAL", 
-            "EQUAL", "INCREMENT", "DECREMENT", "TERNAR", "LOG_AND", "LOG_OR", 
+            "EQUAL", "INCREMENT", "TERNAR", "DECREMENT", "LOG_AND", "LOG_OR", 
             "LOG_NOT", "BIT_OR", "BIT_AND", "PLUS_ASSIGN", "MINUS_ASSIGN", 
             "MULTI_ASSIGN", "DIV_ASSIGN", "REM_ASSIGN", "COM", "WS" ]
 
@@ -222,10 +222,10 @@ class JSLexer(Lexer):
                   "INT", "L_ROUND", "R_ROUND", "L_FIGURE", "R_FIGURE", "L_SQUARE", 
                   "R_SQUARE", "PLUS", "MINUS", "ASSIGN", "MULTI", "DIV", 
                   "REM", "DOT", "COMMA", "SEMI", "LESS", "GREATER", "LESS_EQUAL", 
-                  "GREATER_EQUAL", "NOT_EQUAL", "EQUAL", "INCREMENT", "DECREMENT", 
-                  "TERNAR", "LOG_AND", "LOG_OR", "LOG_NOT", "BIT_OR", "BIT_AND", 
-                  "PLUS_ASSIGN", "MINUS_ASSIGN", "MULTI_ASSIGN", "DIV_ASSIGN", 
-                  "REM_ASSIGN", "COM", "WS" ]
+                  "GREATER_EQUAL", "NOT_EQUAL", "EQUAL", "INCREMENT", "TERNAR", 
+                  "DECREMENT", "LOG_AND", "LOG_OR", "LOG_NOT", "BIT_OR", 
+                  "BIT_AND", "PLUS_ASSIGN", "MINUS_ASSIGN", "MULTI_ASSIGN", 
+                  "DIV_ASSIGN", "REM_ASSIGN", "COM", "WS" ]
 
     grammarFileName = "JS.g4"
 

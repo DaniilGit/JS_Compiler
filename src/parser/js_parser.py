@@ -33,12 +33,13 @@ def javascript_parser(input, output):
   tree = parser.program()
 
   if bool(error_listener.errors):
-    return 
+    return error_listener 
 
   ast = JSVisitor().visitProgram(tree)
   result = AstVisitor().astVisitProgram(ast)
 
-  print(json.dumps(result, indent=2))
+  output.write(json.dumps(result, indent=2))
+  # print(result)
 
 def main():
   parser = argparse.ArgumentParser()

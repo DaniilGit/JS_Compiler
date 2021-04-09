@@ -1,0 +1,28 @@
+{
+  "program": [
+    {
+      "statement": {
+        "Declaration": {
+          "type": "const",
+          "name": "str",
+          "value": "\"Hello World!\""
+        }
+      }
+    },
+    {
+      "statement": {
+        "method_call": {
+          "object_name": "console",
+          "method_name": "log",
+          "arg_list": {
+            "method_call": {
+              "object_name": "str",
+              "method_name": "includes",
+              "arg_list": "\"World\""
+            }
+          }
+        }
+      }
+    }
+  ]
+}
