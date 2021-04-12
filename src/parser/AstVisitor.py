@@ -92,9 +92,53 @@ class AstVisitor():
     }
 
   def astVisitExpression(self, ctx:Expression): # Expression
+    left = ''
+    right = ''
+    operation = ctx.operation
+
+    print(operation)
+    print(ctx.left)
+    print(ctx.right)
+    print(self.visit(ctx.right))
+    # if isinstance(ctx.left, BinaryExpression):
+    #   left = self.visit(ctx.left)
+    # else:
+    #   left = ctx.left
+
+    # if isinstance(ctx.right, BinaryExpression):
+    #   left = self.visit(ctx.right)
+    # else:
+    #   left = ctx.right
+
     return {
-      "expression": ctx.operation
+      "expression": {
+        "f": 1
+      }
     }
+
+  def astVisitBinaryExpression(self, ctx:BinaryExpression):
+    left = ''
+    right = ''
+    operation = ctx.operation
+
+    if isinstance(ctx.left, str):
+      left = ctx.left
+    else:
+      left = self.visit(ctx.left)
+
+    if isinstance(ctx.right, str):
+      right = ctx.right
+    else:
+      right = self.visit(ctx.right)
+    
+    return {
+      "BinaryExpression": {
+        "operation": operation,
+        "left_argument": left,
+        "right_argument": right
+      }
+    }
+
 
   def astVisitReturn_statement(self, ctx:Return_statement): # Return 
     return {

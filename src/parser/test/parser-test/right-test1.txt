@@ -1,1 +1,1 @@
-{'line': '4', 'column': '9', 'msg': "no viable alternative at input 'while(a&&'"}
+{'line': '4', 'column': '10', 'msg': "no viable alternative at input 'while(a4)'"}

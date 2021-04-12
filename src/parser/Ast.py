@@ -61,20 +61,20 @@ class Assign:
 class Expression:
   def __init__(self):
     self.operation = ''
-    self.id = ''
-    self.literal = ''
+    self.left = ''
+    self.right = ''
 
   def accept(self, visitor):
     return visitor.astVisitExpression(self)
 
 class BinaryExpression(Expression):
-  def __init__(self):
-    self.operation = ''
-    self.left_sibling = ''
-    self.right_sibling = ''
+  def __init__(self, operation, left: Expression, right: Expression):
+    self.operation = operation
+    self.left = left
+    self.right = right
   
   def accept(self, visitor):
-    return visitor.astVisitExpression(self)
+    return visitor.astVisitBinaryExpression(self)
 
 class Return_statement:
   def __init__(self):

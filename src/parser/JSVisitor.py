@@ -85,8 +85,16 @@ class JSVisitor(ParseTreeVisitor):
     return assign
 
   def visitExpression(self, ctx:JSParser.ExpressionContext): # Выражение
-    expression = Expression()
-    expression.operation = ctx.getText()
+    if ctx.operation == None and ctx.argument() == None:
+      return self.visit(ctx.expression(0))
+    elif ctx.operation == None:
+      return self.visit(ctx.argument())
+
+    operation = ctx.operation.text
+    left = self.visit(ctx.expression(0))
+    right = self.visit(ctx.expression(1))
+
+    expression = BinaryExpression(operation, left, right)
   
     return expression
 
@@ -185,9 +193,6 @@ class JSVisitor(ParseTreeVisitor):
 
   def visitArray_value(self, ctx:JSParser.Array_valueContext):
     return ctx.getChild(0).getText()
-
-  def visitOperation(self, ctx:JSParser.OperationContext):
-    return ctx.getChild(0)
 
   def visitFor_start(self, ctx:JSParser.For_startContext):
     return self.visit(ctx.getChild(0))

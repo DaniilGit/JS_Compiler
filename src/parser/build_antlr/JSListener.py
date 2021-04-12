@@ -197,12 +197,3 @@ class JSListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by JSParser#operation.
-    def enterOperation(self, ctx:JSParser.OperationContext):
-        pass
-
-    # Exit a parse tree produced by JSParser#operation.
-    def exitOperation(self, ctx:JSParser.OperationContext):
-        pass
-
-

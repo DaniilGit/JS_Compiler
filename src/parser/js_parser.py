@@ -33,6 +33,7 @@ def javascript_parser(input, output):
   tree = parser.program()
 
   if bool(error_listener.errors):
+    print(error_listener.errors)
     return error_listener 
 
   ast = JSVisitor().visitProgram(tree)

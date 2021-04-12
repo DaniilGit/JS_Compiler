@@ -41,11 +41,24 @@
             "left_argument": "i",
             "operation": "<",
             "right_argument": {
-              "expression": "array.length-1"
+              "BinaryExpression": {
+                "operation": "-",
+                "left_argument": {
+                  "object_property": {
+                    "object_name": "array",
+                    "property": "length"
+                  }
+                },
+                "right_argument": "1"
+              }
             }
           },
           "step": {
-            "expression": "i++"
+            "assign": {
+              "name": "i",
+              "operation": "+=",
+              "value": "1"
+            }
           },
           "body": [
             {
@@ -63,7 +76,11 @@
                       "array_element": {
                         "name": "array",
                         "body": {
-                          "expression": "i+1"
+                          "BinaryExpression": {
+                            "operation": "+",
+                            "left_argument": "i",
+                            "right_argument": "1"
+                          }
                         }
                       }
                     }

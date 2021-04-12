@@ -11,16 +11,53 @@
     },
     {
       "statement": {
-        "method_call": {
-          "object_name": "console",
-          "method_name": "log",
-          "arg_list": {
-            "method_call": {
-              "object_name": "str",
-              "method_name": "includes",
-              "arg_list": "\"World\""
+        "Declaration": {
+          "type": "let",
+          "name": "n",
+          "value": "1000"
+        }
+      }
+    },
+    {
+      "statement": {
+        "while_loop": {
+          "condition": {
+            "left_argument": "n",
+            "operation": "<",
+            "right_argument": {
+              "BinaryExpression": {
+                "operation": "-",
+                "left_argument": "1000",
+                "right_argument": "1"
+              }
             }
-          }
+          },
+          "body": [
+            {
+              "statement": {
+                "method_call": {
+                  "object_name": "console",
+                  "method_name": "log",
+                  "arg_list": {
+                    "method_call": {
+                      "object_name": "str",
+                      "method_name": "includes",
+                      "arg_list": "\"World\""
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "statement": {
+                "assign": {
+                  "name": "n",
+                  "operation": "+=",
+                  "value": "1"
+                }
+              }
+            }
+          ]
         }
       }
     }

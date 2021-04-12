@@ -40,9 +40,10 @@ assign
   ;
 
 expression
-  : expression (operation expression)+
-  | argument (operation argument)+
-  | ID (INCREMENT|DECREMENT)
+  : L_ROUND expression R_ROUND
+  | expression operation=(MULTI|DIV) expression
+  | expression operation=(PLUS|MINUS) expression
+  | argument
   ;
 
 return_statement
@@ -83,7 +84,7 @@ condition
   ;
 
 for_step
-  : expression
+  : expression|assign
   ;
 
 argument
@@ -102,9 +103,6 @@ array_value
   : INT|STRING
   ;
 
-operation
-  : PLUS|MINUS|MULTI|DIV|REM
-  ;
 
 CONST: 'const';
 LET: 'let';

@@ -1,4 +1,1 @@
-function main(first, second) {
-  console.log("Hello World!");
-  return true;
-}
+let a = 5 + b * 7;

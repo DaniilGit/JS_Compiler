@@ -114,10 +114,5 @@ class JSVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by JSParser#operation.
-    def visitOperation(self, ctx:JSParser.OperationContext):
-        return self.visitChildren(ctx)
-
-
 
 del JSParser
