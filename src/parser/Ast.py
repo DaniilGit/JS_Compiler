@@ -141,9 +141,9 @@ class Condition:
     return visitor.astVisitCondition(self)
 
 class Object_property:
-  def __init__(self, object_name, property):
+  def __init__(self, object_name, obj_property):
     self.object_name = object_name
-    self.property = property
+    self.property = obj_property
   
   def accept(self, visitor):
     return visitor.astVisitObject_property(self)
