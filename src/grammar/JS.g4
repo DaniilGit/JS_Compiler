@@ -47,7 +47,7 @@ expression
   ;
 
 return_statement
-  : RETURN argument SEMI?
+  : RETURN expression SEMI?
   ;
 
 for_loop
