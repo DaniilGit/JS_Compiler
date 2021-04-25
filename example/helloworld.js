@@ -9,8 +9,8 @@ function f() {
       let e = 5;
     }
     let f = 6;
-    y =5;
-    t = 6;
+    let y =5;
+    const t = 6;
   }
 
   let g = b + c;
@@ -26,7 +26,6 @@ while (5 < 10) {
     let l = 11;
   } else {
     let m = 12;
-    let m = 55;
   }
   let i = 13;
 }
