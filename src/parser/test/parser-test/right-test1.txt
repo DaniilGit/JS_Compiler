@@ -1,1 +1,1 @@
-{'line': '4', 'column': '10', 'msg': "no viable alternative at input 'while(a4)'"}
+Error: line 6:0 mismatched input '}' expecting {'const', 'let', 'var', 'for', 'while', 'return', 'if', 'true', 'false', STRING, ID, INT, '('}

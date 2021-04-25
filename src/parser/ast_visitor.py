@@ -1,7 +1,9 @@
 import sys
 from build_antlr.JSParser import JSParser
-from Ast import *
+from ast_tree import *
 from antlr4 import *
+from symtab.sym import Symbol
+from symtab.scope import Scope
 
 class AstVisitor():
   def visit(self, tree):
@@ -36,26 +38,36 @@ class AstVisitor():
       "statement": self.visit(ctx.statement)
     }
 
-  def astVisitFunction_call(self, ctx:Function_call): # Вызов функции 
+  def astVisitFunction_call(self, ctx:Function_call): # Вызов функции
+    arg_list = []
+
+    for arg in ctx.arg_list:
+      if isinstance(arg, str):
+        arg_list.append(arg)
+      else:
+        arg_list.append(self.visit(arg))
+
     return {
       "function_call": {
         "name": ctx.name,
-        "arg_list": ctx.arg_list
+        "arg_list": arg_list
       }
     }
 
   def astVisitMethod_call(self, ctx:Method_call): # Вызов метода
+    arg_list = []
+
     for arg in ctx.arg_list:
       if isinstance(arg, str):
-        break
+        arg_list.append(arg)
       else:
-        arg = self.visit(arg)
+        arg_list.append(self.visit(arg))
 
     return {
       "method_call": {
         "object_name": ctx.object_name,
         "method_name": ctx.method_name,
-        "arg_list": arg
+        "arg_list": arg_list
       }
     }
   
@@ -85,7 +97,7 @@ class AstVisitor():
 
     return {
       "assign": {
-        "name": ctx.name,
+        "name": self.visit(ctx.name),
         "operation": ctx.operation,
         "value": value
       }
@@ -202,7 +214,7 @@ class AstVisitor():
 
     return {
       "array_element": {
-        "name": ctx.name,
+        "name": self.visit(ctx.name),
         "body": body
       }
     }
@@ -234,3 +246,6 @@ class AstVisitor():
         "property": ctx.property
       }
     }
+
+  def astVisitId(self, ctx:Id): # Идентификаторы
+    return ctx.name

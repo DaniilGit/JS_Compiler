@@ -38,13 +38,17 @@
                 "method_call": {
                   "object_name": "console",
                   "method_name": "log",
-                  "arg_list": {
-                    "method_call": {
-                      "object_name": "str",
-                      "method_name": "includes",
-                      "arg_list": "\"World\""
+                  "arg_list": [
+                    {
+                      "method_call": {
+                        "object_name": "str",
+                        "method_name": "includes",
+                        "arg_list": [
+                          "\"World\""
+                        ]
+                      }
                     }
-                  }
+                  ]
                 }
               }
             },

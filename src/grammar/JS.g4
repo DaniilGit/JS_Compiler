@@ -1,7 +1,7 @@
 grammar JS;
 
 program
-  : function_declaration* statement*
+  : (function_declaration|statement)*
   ;
 
 function_declaration
@@ -30,7 +30,6 @@ method_call
 
 declaration
   : (LET|VAR|CONST) ID SEMI?
-  | (LET|VAR|CONST) ID ASSIGN argument SEMI?
   | (LET|VAR|CONST) ID ASSIGN expression SEMI?
   | (LET|VAR|CONST) ID ASSIGN L_SQUARE ((array_value COMMA?)*) R_SQUARE SEMI?
   ;
@@ -80,7 +79,7 @@ for_start
   ;
 
 condition
-  : (argument|expression) (LESS|GREATER|LESS_EQUAL|GREATER_EQUAL|NOT_EQUAL|EQUAL) (argument|expression)
+  : expression (LESS|GREATER|LESS_EQUAL|GREATER_EQUAL|NOT_EQUAL|EQUAL) expression
   ;
 
 for_step

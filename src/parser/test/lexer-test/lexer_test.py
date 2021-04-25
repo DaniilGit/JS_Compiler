@@ -1,7 +1,7 @@
 import sys
 import pytest
 sys.path.append('src/parser')
-from lexer import javascript_lexer
+from js_lexer import javascript_lexer
 from antlr4 import *
 
 test_paths = [

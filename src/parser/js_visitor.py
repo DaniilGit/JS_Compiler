@@ -1,6 +1,6 @@
 import sys
 from build_antlr.JSParser import JSParser
-from Ast import *
+from ast_tree import *
 from antlr4 import *
 
 class JSVisitor(ParseTreeVisitor):
@@ -14,6 +14,7 @@ class JSVisitor(ParseTreeVisitor):
 
   def visitFunction_declaration(self, ctx:JSParser.Function_declarationContext): # Объявление функции
     name = ctx.ID(0).getText()
+    token_scope = ctx.ID(0).getSymbol()
     arg_list = []
     body = []
 
@@ -23,7 +24,7 @@ class JSVisitor(ParseTreeVisitor):
     for child in ctx.statement():
       body.append(self.visit(child))
 
-    return Function_declaration(name, body, arg_list)
+    return Function_declaration(name, body, arg_list, token_scope)
 
   def visitStatement(self, ctx:JSParser.StatementContext): # Statement
     statement = self.visit(ctx.getChild(0))
@@ -35,7 +36,7 @@ class JSVisitor(ParseTreeVisitor):
     arg_list = []
 
     for arg in ctx.argument():
-      arg_list.append(arg.getText()) 
+      arg_list.append(self.visit(arg)) 
 
     return Function_call(name, arg_list)
 
@@ -53,6 +54,7 @@ class JSVisitor(ParseTreeVisitor):
   def visitDeclaration(self, ctx:JSParser.DeclarationContext): # Объявление переменной
     type_value = ctx.getChild(0).getText()
     name = ctx.ID().getText()
+    token = ctx.ID().getSymbol()
 
     if ctx.expression() != None:
       value = self.visit(ctx.expression())
@@ -64,10 +66,13 @@ class JSVisitor(ParseTreeVisitor):
     elif ctx.argument() != None:
       value = ctx.argument().getText()
     
-    return Declaration(type_value, name, value)
+    return Declaration(type_value, name, value, token)
 
   def visitAssign(self, ctx:JSParser.AssignContext): # Присваивание
-    name = ctx.getChild(0).getText()
+    if (ctx.ID() != None):
+      name = Id(ctx.ID().getText(), ctx.ID().getSymbol())
+    else:
+      name = self.visit(ctx.getChild(0))
     operation = ctx.getChild(1).getText()
 
     if ctx.expression() != None:
@@ -106,26 +111,29 @@ class JSVisitor(ParseTreeVisitor):
     condition = self.visit(ctx.condition())
     step = self.visit(ctx.for_step())
     body = []
+    token_scope = ctx.FOR().getSymbol()
 
     for child in ctx.statement():
       body.append(self.visit(child))
 
-    return For_loop(start, condition, step, body)
+    return For_loop(start, condition, step, body, token_scope)
 
   def visitWhile_loop(self, ctx:JSParser.While_loopContext): # Цикл while
     condition = self.visit(ctx.condition())
     body = []
+    token_scope = ctx.WHILE().getSymbol()
 
     for child in ctx.statement():
       body.append(self.visit(child))
 
-    return While_loop(condition, body)
+    return While_loop(condition, body, token_scope)
 
   def visitInstruction_if(self, ctx:JSParser.Instruction_ifContext): # Конструкция If
     condition = self.visit(ctx.condition())
     body = []
     instr_elseif = []
     instr_else = ''
+    token_scope = ctx.IF().getSymbol()
 
     for child in ctx.statement():
       body.append(self.visit(child))
@@ -137,24 +145,26 @@ class JSVisitor(ParseTreeVisitor):
     if ctx.instruction_else() != None:
       instr_else = self.visit(ctx.instruction_else())
 
-    return Instruction_if(condition, body, instr_elseif, instr_else)
+    return Instruction_if(condition, body, instr_elseif, instr_else, token_scope)
 
   def visitInstruction_elseif(self, ctx:JSParser.Instruction_elseifContext): # Конструкция else if
     condition = self.visit(ctx.condition())
     body = []
+    token_scope = ctx.ELSE().getSymbol()
 
     for child in ctx.statement():
       body.append(self.visit(child))
 
-    return Instruction_elseif(condition, body)
+    return Instruction_elseif(condition, body, token_scope)
 
   def visitInstruction_else(self, ctx:JSParser.Instruction_elseContext): # Констркуция else
     body = []
+    token_scope = ctx.ELSE().getSymbol()
 
     for child in ctx.statement():
       body.append(self.visit(child))
 
-    return Instruction_else(body)
+    return Instruction_else(body, token_scope)
 
   def visitCondition(self, ctx:JSParser.ConditionContext): # Условие в циклах
     left_argument = self.visit(ctx.getChild(0))
@@ -168,11 +178,13 @@ class JSVisitor(ParseTreeVisitor):
         or ctx.getChild(0) == ctx.object_property() 
           or ctx.getChild(0) == ctx.method_call()):
       return self.visit(ctx.getChild(0))
+    elif (ctx.ID() != None):
+      return Id(ctx.ID().getText(), ctx.ID().getSymbol())
     else:
       return ctx.getChild(0).getText()
 
   def visitArray_element(self, ctx:JSParser.Array_elementContext): # Элемент массива
-    name = ctx.ID(0).getText()
+    name = Id(ctx.ID(0).getText(), ctx.ID(0).getSymbol())
 
     if ctx.getChild(2) == ctx.expression():
       body = self.visit(ctx.expression())

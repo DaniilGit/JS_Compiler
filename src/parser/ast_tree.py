@@ -1,5 +1,4 @@
 import sys
-import argparse
 from build_antlr.JSParser import JSParser
 from antlr4 import *
 
@@ -8,10 +7,11 @@ class Program:
     self.children = children
 
 class Function_declaration:
-  def __init__(self, name, body, arg_list):
+  def __init__(self, name, body, arg_list, token_scope):
     self.name = name
     self.body = body
     self.arg_list = arg_list
+    self.token_scope = token_scope
 
   def accept(self, visitor):
     return visitor.astVisitFunction_declaration(self)
@@ -41,10 +41,11 @@ class Method_call:
     return visitor.astVisitMethod_call(self)
 
 class Declaration:
-  def __init__(self, type_value, name, value):
+  def __init__(self, type_value, name, value, token):
     self.type = type_value
     self.name = name
     self.value = value
+    self.token = token
 
   def accept(self, visitor):
     return visitor.astVisitDeclaration(self)
@@ -89,44 +90,49 @@ class Array_element:
     return visitor.astVisitArray_element(self)
 
 class For_loop:
-  def __init__(self, start, condition, step, body):
+  def __init__(self, start, condition, step, body, token_scope):
     self.start = start
     self.condition = condition
     self.step = step
     self.body = body
+    self.token_scope = token_scope
 
   def accept(self, visitor):
     return visitor.astVisitFor_loop(self)
 
 class While_loop:
-  def __init__(self, condition, body):
+  def __init__(self, condition, body, token_scope):
     self.condition = condition
     self.body = body
+    self.token_scope = token_scope
 
   def accept(self, visitor):
     return visitor.astVisitWhile_loop(self)
 
 class Instruction_if:
-  def __init__(self, condition, body, instr_elseif, instr_else):
+  def __init__(self, condition, body, instr_elseif, instr_else, token_scope):
     self.condition = condition
     self.body = body
     self.instuction_elseif = instr_elseif
     self.instuction_else = instr_else
+    self.token_scope = token_scope
 
   def accept(self, visitor):
     return visitor.astVisitInstruction_if(self)
 
 class Instruction_elseif:
-  def __init__(self, condition, body):
+  def __init__(self, condition, body, token_scope):
     self.condition = condition
     self.body = body
+    self.token_scope = token_scope
 
   def accept(self, visitor):
     return visitor.astVisitInstruction_elseif(self)
   
 class Instruction_else:
-  def __init__(self, body):
+  def __init__(self, body, token_scope):
     self.body = body
+    self.token_scope = token_scope
 
   def accept(self, visitor):
     return visitor.astVisitInstruction_else(self)
@@ -147,3 +153,11 @@ class Object_property:
   
   def accept(self, visitor):
     return visitor.astVisitObject_property(self)
+
+class Id:
+  def __init__(self, name, token):
+    self.name = name
+    self.token = token
+  
+  def accept(self, visitor):
+    return visitor.astVisitId(self)
