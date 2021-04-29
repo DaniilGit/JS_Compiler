@@ -4,6 +4,6 @@ from ast_tree import *
 from random import randint
 
 class Symbol:
-  def __init__(self, name):
+  def __init__(self, name, position):
     self.name = name
-    self.hash_code = randint(-1000000, 1000000)
+    self.hash_code = hash(position)
