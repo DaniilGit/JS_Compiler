@@ -31,11 +31,11 @@ method_call
 declaration
   : (LET|VAR|CONST) ID SEMI?
   | (LET|VAR|CONST) ID ASSIGN expression SEMI?
-  | (LET|VAR|CONST) ID ASSIGN L_SQUARE ((array_value COMMA?)*) R_SQUARE SEMI?
+  | (LET|VAR|CONST) ID ASSIGN array SEMI?
   ;
 
 assign
-  : (ID|array_element) (ASSIGN|PLUS_ASSIGN|MINUS_ASSIGN|MULTI_ASSIGN|DIV_ASSIGN|REM_ASSIGN) (argument|expression|(L_SQUARE ((array_value COMMA?)*) R_SQUARE)) SEMI?
+  : (ID|array_element) (ASSIGN|PLUS_ASSIGN|MINUS_ASSIGN|MULTI_ASSIGN|DIV_ASSIGN|REM_ASSIGN) (expression|array) SEMI?
   ;
 
 expression
@@ -87,21 +87,32 @@ for_step
   ;
 
 argument
-  : ID|INT|STRING|TRUE|FALSE|array_element|object_property|method_call
+  : ID|integer_literal|string_literal|TRUE|FALSE|array_element|object_property|method_call
   ;
 
 array_element
-  : ID L_SQUARE (ID|INT|expression) R_SQUARE
+  : ID L_SQUARE (ID|integer_literal|expression) R_SQUARE
   ;
 
 object_property
   : ID DOT ID
   ;
 
-array_value
-  : INT|STRING
+array
+  : L_SQUARE ((array_value COMMA?)*) R_SQUARE
   ;
 
+array_value
+  : string_literal|integer_literal
+  ;
+
+string_literal
+  : STRING
+  ;
+
+integer_literal
+  : INT
+  ;
 
 CONST: 'const';
 LET: 'let';
