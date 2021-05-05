@@ -24,9 +24,10 @@ class Statement:
     return visitor.astVisitStatement(self)
 
 class Function_call:
-  def __init__(self, name, arg_list):
+  def __init__(self, name, arg_list, token):
     self.name = name
     self.arg_list = arg_list
+    self.token = token
 
   def accept(self, visitor):
     return visitor.astVisitFunction_call(self)
@@ -51,10 +52,11 @@ class Declaration:
     return visitor.astVisitDeclaration(self)
 
 class Assign:
-  def __init__(self, name, operation, value):
+  def __init__(self, name, operation, value, token):
     self.name = name
     self.operation = operation
     self.value = value
+    self.token = token
 
   def accept(self, visitor):
     return visitor.astVisitAssign(self)
@@ -153,6 +155,30 @@ class Object_property:
   
   def accept(self, visitor):
     return visitor.astVisitObject_property(self)
+
+class Integer_literal:
+  def __init__(self, value):
+    self.value = value
+    self.type = 'int'
+
+  def accept(self, visitor):
+    return visitor.astVisitorInteger_literal(self)
+
+class String_literal:
+  def __init__(self, value):
+    self.value = value
+    self.type = 'str'
+
+  def accept(self, visitor):
+    return visitor.astVisitorString_literal(self)
+
+class Array:
+  def __init__(self, list_value):
+    self.list_value = list_value
+    self.type = 'array'
+
+  def accept(self, visitor):
+    return visitor.astVisitorArray(self)
 
 class Id:
   def __init__(self, name, token):

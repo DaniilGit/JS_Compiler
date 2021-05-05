@@ -1,0 +1,2 @@
+Error: line 8 invalid number of arguments f() takes 2, given 1
+Error: line 10 undefined function g()

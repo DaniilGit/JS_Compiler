@@ -91,7 +91,7 @@
                         "assign": {
                           "name": "min",
                           "operation": "=",
-                          "value": "array[i+1]"
+                          "value": "i"
                         }
                       }
                     }

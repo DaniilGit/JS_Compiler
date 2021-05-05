@@ -109,8 +109,23 @@ class JSVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by JSParser#array.
+    def visitArray(self, ctx:JSParser.ArrayContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by JSParser#array_value.
     def visitArray_value(self, ctx:JSParser.Array_valueContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by JSParser#string_literal.
+    def visitString_literal(self, ctx:JSParser.String_literalContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by JSParser#integer_literal.
+    def visitInteger_literal(self, ctx:JSParser.Integer_literalContext):
         return self.visitChildren(ctx)
 
 

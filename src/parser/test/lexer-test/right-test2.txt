@@ -60,11 +60,6 @@ Loc=<5:27>  R_SQUARE ]
 Loc=<5:28>  R_ROUND )
 Loc=<6:7>  ID min
 Loc=<6:9>  ASSIGN =
-Loc=<6:15>  ID array
-Loc=<6:16>  L_SQUARE [
-Loc=<6:17>  ID i
-Loc=<6:18>  PLUS +
-Loc=<6:19>  INT 1
-Loc=<6:20>  R_SQUARE ]
-Loc=<6:21>  SEMI ;
+Loc=<6:11>  ID i
+Loc=<6:12>  SEMI ;
 Loc=<7:1>  R_FIGURE }

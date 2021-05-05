@@ -1,1 +1,2 @@
 Error: line 9:4 undefined symbol - n
+Error: line 9 unsupported operand type(s) for = None and int

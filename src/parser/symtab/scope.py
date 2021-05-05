@@ -8,20 +8,22 @@ class Scope():
     self.name = name
     self.hash_table = {}
     self.parent = parent
+    self.func_args = {} # Словарь где ключ - имя функции, значение - кол-во аргументов
 
   def define(self, symbol, position, errors):
     if self.hash_table.get(symbol.name):
       errors.append(f"Error: line {position} redefinition symbol - {symbol.name}")
       return None
 
-    self.hash_table[symbol.name] = symbol.hash_code
+    self.hash_table[symbol.name] = symbol
   
   def resolve(self, name, position, errors):
     if self.hash_table.get(name):
-      return Symbol(name, position)
+      return self.hash_table[name]
 
     if self.parent:
       return self.parent.resolve(name, position, errors)
   
-    errors.append(f"Error: line {position} undefined symbol - {name}")
+    if errors != None:
+      errors.append(f"Error: line {position} undefined symbol - {name}")
     

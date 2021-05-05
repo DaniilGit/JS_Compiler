@@ -6,6 +6,7 @@ from antlr4.error.ErrorListener import ErrorListener
 from build_antlr.JSLexer import JSLexer
 from build_antlr.JSParser import JSParser
 from symtab.symtab import Symtab
+from symtab.semantic import Semantic
 from ast_visitor import AstVisitor
 from js_visitor import JSVisitor
 
@@ -30,11 +31,9 @@ def javascript_parser(input, output):
 
   ast = JSVisitor().visitProgram(tree)
   ast_json = AstVisitor().astVisitProgram(ast)
-  symtab = Symtab(error_listener.errors)
-  result = symtab.astVisitProgram(ast)
+  symtab = Symtab(error_listener.errors).astVisitProgram(ast)
 
   if bool(error_listener.errors):
-    print(error_listener.errors)
     for error in error_listener.errors:
       print(error)
     return error_listener 

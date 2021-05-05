@@ -74,9 +74,14 @@ class AstVisitor():
   def astVisitDeclaration(self, ctx:Declaration): # Объявление переменной
     value = ''
 
-    if isinstance(ctx.value, str) or isinstance(ctx.value, list):
+    if isinstance(ctx.value, str):
       value = ctx.value
-    else: 
+    elif isinstance(ctx.value, Array):
+      list_value = []
+      for elem in self.visit(ctx.value):
+        list_value.append(self.visit(elem))
+      value = list_value
+    else:
       value = self.visit(ctx.value) 
 
     return {
@@ -90,7 +95,7 @@ class AstVisitor():
   def astVisitAssign(self, ctx:Assign): # Присваивание
     value = ''
 
-    if isinstance(ctx.value, str) or isinstance(ctx.value, list): 
+    if isinstance(ctx.value, str): 
       value = ctx.value
     else: 
       value = self.visit(ctx.value) 
@@ -249,3 +254,12 @@ class AstVisitor():
 
   def astVisitId(self, ctx:Id): # Идентификаторы
     return ctx.name
+
+  def astVisitorArray(self, ctx:Array):
+    return ctx.list_value
+
+  def astVisitorInteger_literal(self, ctx:Integer_literal): # Идентификаторы
+    return ctx.value
+
+  def astVisitorString_literal(self, ctx:String_literal): # Идентификаторы
+    return ctx.value

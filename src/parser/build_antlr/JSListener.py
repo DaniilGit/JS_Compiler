@@ -188,12 +188,39 @@ class JSListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by JSParser#array.
+    def enterArray(self, ctx:JSParser.ArrayContext):
+        pass
+
+    # Exit a parse tree produced by JSParser#array.
+    def exitArray(self, ctx:JSParser.ArrayContext):
+        pass
+
+
     # Enter a parse tree produced by JSParser#array_value.
     def enterArray_value(self, ctx:JSParser.Array_valueContext):
         pass
 
     # Exit a parse tree produced by JSParser#array_value.
     def exitArray_value(self, ctx:JSParser.Array_valueContext):
+        pass
+
+
+    # Enter a parse tree produced by JSParser#string_literal.
+    def enterString_literal(self, ctx:JSParser.String_literalContext):
+        pass
+
+    # Exit a parse tree produced by JSParser#string_literal.
+    def exitString_literal(self, ctx:JSParser.String_literalContext):
+        pass
+
+
+    # Enter a parse tree produced by JSParser#integer_literal.
+    def enterInteger_literal(self, ctx:JSParser.Integer_literalContext):
+        pass
+
+    # Exit a parse tree produced by JSParser#integer_literal.
+    def exitInteger_literal(self, ctx:JSParser.Integer_literalContext):
         pass
 
 
