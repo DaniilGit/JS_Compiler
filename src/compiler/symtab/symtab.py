@@ -1,5 +1,6 @@
 import sys
-sys.path.append('src/parser/symtab')
+from ast_visitor import AstVisitor
+sys.path.append('src/compiler')
 from build_antlr.JSParser import JSParser
 from ast_tree import *
 from antlr4 import *
@@ -7,11 +8,11 @@ from semantic import Semantic
 from sym import Symbol
 from scope import Scope
 
-class Symtab:
+class Symtab(AstVisitor):
   def __init__(self, errors):
     self.scope_stack = []
     self.errors = errors
-    self.types_table = {}
+    self.node_to_symbol = {}
 
   def visit(self, tree):
     return tree.accept(self)
@@ -30,7 +31,7 @@ class Symtab:
     for child in ctx.children:
       self.visit(child)
 
-    return self.types_table
+    return self.node_to_symbol
 
   def astVisitFunction_declaration(self, ctx:Function_declaration): # Область видимости - Объявление функции 
     scope_name = self.set_scope_name(ctx.name, ctx.token_scope.line, ctx.token_scope.column)
@@ -127,7 +128,7 @@ class Symtab:
 
     type = Semantic(self.errors, ctx.token).get_type(ctx.value, scope)
     symbol = Symbol(ctx.name, type, position)
-    self.types_table[ctx] = symbol.type # Хеш таблица, в который ключ - узел ast, значение - тип
+    self.node_to_symbol[ctx] = symbol # Хеш таблица, в который ключ - узел ast, значение - тип
 
     scope.define(symbol, position, self.errors)
 
@@ -138,6 +139,7 @@ class Symtab:
     position = f'{ctx.token.line}:{ctx.token.column}'
     scope = self.scope_stack.copy().pop()
     symbol = scope.resolve(ctx.name, position, self.errors)
+    self.node_to_symbol[ctx] = symbol
     # print(symbol.name, symbol.type, position)
     if symbol:
       return symbol.type

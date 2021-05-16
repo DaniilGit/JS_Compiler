@@ -1,27 +1,27 @@
 import sys
 import pytest
-sys.path.append('src/parser')
+sys.path.append('src/compiler')
 from js_parser import javascript_parser
 from antlr4 import *
 
 test_paths = [
-  ("example/example7.js", "src/parser/test/semantic-test/right-test1.txt"),
-  ("example/example8.js", "src/parser/test/semantic-test/right-test2.txt")
+  ("example/example5.js", "src/compiler/test/symtab-test/right-test1.txt"),
+  ("example/example6.js", "src/compiler/test/symtab-test/right-test2.txt")
 ]
 
-output = "src/parser/test/semantic-test/output.txt"
+output = "src/compiler/test/symtab-test/output.txt"
 
-def test_semantic():
+def test_symtab():
   output_stream = open(output, 'w')
-  errors = javascript_parser("example/example4.js", output_stream)
+  errors = javascript_parser("example/example4.js", output_stream, [])
   output_stream.close()
 
   assert (errors == None)
 
 @pytest.mark.parametrize("input,expected", test_paths)
-def test_semantic_negative(input, expected):
+def test_symtab_negative(input, expected):
   output_stream = open(output, 'w')
-  errors = javascript_parser(input, output_stream)
+  errors = javascript_parser(input, output_stream, [])
 
   for elem in errors.errors:
     output_stream.write(elem)

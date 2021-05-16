@@ -1,5 +1,5 @@
 import sys
-sys.path.append('src/parser/symtab')
+sys.path.append('src/compiler/symtab')
 from ast_tree import *
 from sym import Symbol
 

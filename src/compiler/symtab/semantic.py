@@ -1,5 +1,5 @@
 import sys
-sys.path.append('src/parser')
+sys.path.append('src/compiler')
 from build_antlr.JSParser import JSParser
 from ast_tree import *
 from antlr4 import *

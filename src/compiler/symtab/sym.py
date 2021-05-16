@@ -1,5 +1,5 @@
 import sys
-sys.path.append('src/parser')
+sys.path.append('src/compiler')
 from ast_tree import *
 from random import randint
 
