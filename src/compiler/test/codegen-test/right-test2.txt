@@ -1,0 +1,52 @@
+target triple = "x86_64-pc-linux-gnu"
+declare i32 @printf(i8*, ...)
+@.j914 = private unnamed_addr constant [4 x i8] c"%d\0A\00"
+@.i1114 = private unnamed_addr constant [4 x i8] c"%d\0A\00"
+
+define dso_local i32 @main() {
+  %i14 = alloca i32
+  store i32 5, i32* %i14
+
+  %j24 = alloca i32
+  %tmp_i29 = load i32, i32* %i14
+  %op_0 = add nsw i32 %tmp_i29, 5
+  %op_1 = mul nsw i32 %op_0, 10
+  store i32 %op_1, i32* %j24
+
+  br label %mark_0
+
+mark_0:
+  %tmp_j24_2 = load i32, i32* %j24
+  %op_3 = icmp sgt i32 %tmp_j24_2, 0
+  br i1 %op_3, label %mark_1, label %mark_2
+
+mark_1:
+  %tmp_j56 = load i32, i32* %j24
+  %op_4 = sdiv i32 %tmp_j56, 2
+  store i32 %op_4, i32* %j24
+
+  br label %mark_0
+
+mark_2:
+  br label %mark_3
+
+mark_3:
+  %tmp_j24_5 = load i32, i32* %j24
+  %op_6 = icmp eq i32 %tmp_j24_5, 0
+  br i1 %op_6, label %mark_4, label %mark_5
+
+mark_4:
+  %tmp_j914 = load i32, i32* %j24
+  %write_j914 = call i32 (i8*, ...) @printf(i8* getelementptr ([4 x i8], [4 x i8]* @.j914, i64 0, i64 0), i32 %tmp_j914)
+
+  br label %mark_6
+
+mark_5:
+  %tmp_i1114 = load i32, i32* %i14
+  %write_i1114 = call i32 (i8*, ...) @printf(i8* getelementptr ([4 x i8], [4 x i8]* @.i1114, i64 0, i64 0), i32 %tmp_i1114)
+
+  br label %mark_6
+
+mark_6:
+  ret i32 0
+}

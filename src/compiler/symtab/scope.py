@@ -1,7 +1,8 @@
 import sys
+sys.path.append('src/compiler/ast')
 sys.path.append('src/compiler/symtab')
+
 from ast_tree import *
-from sym import Symbol
 
 class Scope():
   def __init__(self, name, parent):

@@ -1,12 +1,12 @@
 import sys
+sys.path.append('src/compiler/ast')
+
 from ast_visitor import AstVisitor
-sys.path.append('src/compiler')
-from build_antlr.JSParser import JSParser
 from ast_tree import *
-from antlr4 import *
 from semantic import Semantic
 from sym import Symbol
 from scope import Scope
+from antlr4 import *
 
 class Symtab(AstVisitor):
   def __init__(self, errors):
@@ -42,6 +42,11 @@ class Symtab(AstVisitor):
 
     parent.func_args[ctx.name] = ctx.arg_list
     scope.func_args[ctx.name] = ctx.arg_list
+
+    for arg in ctx.arg_list:
+      symbol = Symbol(arg.name, 'int', arg.token.line)
+      self.node_to_symbol[arg] = symbol 
+      scope.define(symbol, arg.token.line, self.errors)
 
     for child in ctx.body:
       self.visit(child)
@@ -140,7 +145,7 @@ class Symtab(AstVisitor):
     scope = self.scope_stack.copy().pop()
     symbol = scope.resolve(ctx.name, position, self.errors)
     self.node_to_symbol[ctx] = symbol
-    # print(symbol.name, symbol.type, position)
+ 
     if symbol:
       return symbol.type
 
@@ -161,7 +166,7 @@ class Symtab(AstVisitor):
     Semantic(self.errors, ctx.token).compare_func_args(ctx.name, ctx.arg_list, scope.func_args)
 
     for arg in ctx.arg_list:
-      if isinstance(arg, Id):
+      if isinstance(arg, Id) or isinstance(arg, BinaryExpression):
         self.visit(arg)
 
 #########################################
@@ -186,7 +191,7 @@ class Symtab(AstVisitor):
       self.visit(ctx.right)
 
   def astVisitReturn_statement(self, ctx:Return_statement): # Return
-    self.visit(ctx.value) 
+    self.visit(ctx.value)
 
   def astVisitCondition(self, ctx:Condition): # Условие в циклах
     if not isinstance(ctx.left_argument, str): 

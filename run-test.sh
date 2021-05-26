@@ -12,6 +12,9 @@ rm src/compiler/test/symtab-test/output.txt
 pytest -q src/compiler/test/semantic-test/semantic_test.py
 rm src/compiler/test/semantic-test/output.txt
 
+pytest -q src/compiler/test/codegen-test/codegen_test.py
+rm src/compiler/test/codegen-test/output.txt
+
 rm -R .pytest_cache
 rm -R src/compiler/__pycache__
 rm -R src/compiler/test/lexer-test/__pycache__

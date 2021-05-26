@@ -224,3 +224,12 @@ class JSListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by JSParser#import_module.
+    def enterImport_module(self, ctx:JSParser.Import_moduleContext):
+        pass
+
+    # Exit a parse tree produced by JSParser#import_module.
+    def exitImport_module(self, ctx:JSParser.Import_moduleContext):
+        pass
+
+

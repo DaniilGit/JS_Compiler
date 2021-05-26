@@ -1,0 +1,44 @@
+target triple = "x86_64-pc-linux-gnu"
+define dso_local i32 @sum(i32 %arg_i, i32 %arg_j) {
+  %i_613 = alloca i32
+  store i32 %arg_i, i32* %i_613
+
+  %j_616 = alloca i32
+  store i32 %arg_j, i32* %j_616
+
+  %result76 = alloca i32
+  store i32 0, i32* %result76
+
+  %tmp_i811 = load i32, i32* %i_613
+  %tmp_j815 = load i32, i32* %j_616
+  %op_0 = add nsw i32 %tmp_i811, %tmp_j815
+  store i32 %op_0, i32* %result76
+
+  %tmp_result = load i32, i32* %result76
+  ret i32 %tmp_result
+}
+declare i32 @printf(i8*, ...)
+@.result1512 = private unnamed_addr constant [4 x i8] c"%d\0A\00"
+
+define dso_local i32 @main() {
+  %i14 = alloca i32
+  store i32 15, i32* %i14
+
+  %j24 = alloca i32
+  store i32 16, i32* %j24
+
+  %n44 = alloca i32
+  %tmp_n44 = load i32, i32* %j24
+  store i32 %tmp_n44, i32* %n44
+
+  %arg_i14_1 = load i32, i32* %i14
+  %arg_n44_2 = load i32, i32* %n44
+  %func_sum_1313 = call i32 @sum(i32 %arg_i14_1, i32 %arg_n44_2)
+  %result134 = alloca i32
+  store i32 %func_sum_1313, i32* %result134
+
+  %tmp_result1512 = load i32, i32* %result134
+  %write_result1512 = call i32 (i8*, ...) @printf(i8* getelementptr ([4 x i8], [4 x i8]* @.result1512, i64 0, i64 0), i32 %tmp_result1512)
+
+  ret i32 0
+}

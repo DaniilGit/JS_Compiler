@@ -1,4 +1,3 @@
-import sys
 from build_antlr.JSLexer import JSLexer
 from antlr4 import *
 

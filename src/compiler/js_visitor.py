@@ -1,13 +1,15 @@
-import sys
+from antlr4 import *
+
 from build_antlr.JSParser import JSParser
 from ast_tree import *
-from antlr4 import *
 
 class JSVisitor(ParseTreeVisitor):
   def visitProgram(self, ctx:JSParser.ProgramContext):
     children = []
 
     for child in ctx.children:
+      if self.visit(child) == None:
+        continue
       children.append(self.visit(child))
 
     return Program(children)
@@ -19,7 +21,7 @@ class JSVisitor(ParseTreeVisitor):
     body = []
 
     for i in range(1, len(ctx.ID())):
-      arg_list.append(ctx.ID(i).getText()) 
+      arg_list.append(Id(ctx.ID(i).getText(), ctx.ID(i).getSymbol()))  
 
     for child in ctx.statement():
       body.append(self.visit(child))
@@ -36,7 +38,7 @@ class JSVisitor(ParseTreeVisitor):
     token = ctx.ID().getSymbol()
     arg_list = []
 
-    for arg in ctx.argument():
+    for arg in ctx.expression():
       arg_list.append(self.visit(arg)) 
 
     return Function_call(name, arg_list, token)
@@ -57,12 +59,12 @@ class JSVisitor(ParseTreeVisitor):
     name = ctx.ID().getText()
     token = ctx.ID().getSymbol()
 
+    if ctx.function_call() != None:
+      value = self.visit(ctx.function_call())
     if ctx.expression() != None:
       value = self.visit(ctx.expression())
     elif ctx.array() != None:
       value = self.visit(ctx.array())
-    elif ctx.argument() != None:
-      value = ctx.argument().getText()
     
     return Declaration(type_value, name, value, token)
 
@@ -74,7 +76,9 @@ class JSVisitor(ParseTreeVisitor):
 
     token = ctx.ID().getSymbol()
     operation = ctx.getChild(1).getText()
-
+  
+    if ctx.function_call() != None:
+      value = self.visit(ctx.function_call())
     if ctx.expression() != None:
       value = self.visit(ctx.expression())
     elif ctx.array() != None:
@@ -173,7 +177,8 @@ class JSVisitor(ParseTreeVisitor):
         or ctx.getChild(0) == ctx.object_property() 
           or ctx.getChild(0) == ctx.method_call()
             or ctx.getChild(0) == ctx.integer_literal()
-              or ctx.getChild(0) == ctx.string_literal()):
+              or ctx.getChild(0) == ctx.string_literal()
+                or ctx.getChild(0) == ctx.function_call()):
       return self.visit(ctx.getChild(0))
     elif (ctx.ID() != None):
       return Id(ctx.ID().getText(), ctx.ID().getSymbol())

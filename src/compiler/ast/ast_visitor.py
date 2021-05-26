@@ -21,14 +21,18 @@ class AstVisitor():
 
   def astVisitFunction_declaration(self, ctx:Function_declaration): # Объявление функции 
     body = []
+    args = []
 
     for child in ctx.body:
       body.append(self.visit(child))
 
+    for arg in ctx.arg_list:
+      args.append(self.visit(arg))
+
     return {
       "function_declaration": {
         "name": ctx.name,
-        "arg_list": ctx.arg_list,
+        "arg_list": args,
         "body": body
       }
     }

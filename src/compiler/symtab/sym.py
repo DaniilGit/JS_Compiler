@@ -1,7 +1,5 @@
 import sys
 sys.path.append('src/compiler')
-from ast_tree import *
-from random import randint
 
 class Symbol:
   def __init__(self, name, type, position):

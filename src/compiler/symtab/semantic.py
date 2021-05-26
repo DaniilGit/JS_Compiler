@@ -1,6 +1,6 @@
 import sys
 sys.path.append('src/compiler')
-from build_antlr.JSParser import JSParser
+
 from ast_tree import *
 from antlr4 import *
 
@@ -18,6 +18,12 @@ class Semantic:
 
     if isinstance(node, Array):
       return 'array'
+
+    if isinstance(node, Method_call) and node.method_name == 'read_int':
+      return 'int'
+
+    if isinstance(node, Function_call):
+      return 'int'
 
     if isinstance(node, Id):
       symbol = scope.resolve(node.name, True, None)

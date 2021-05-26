@@ -129,5 +129,10 @@ class JSVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by JSParser#import_module.
+    def visitImport_module(self, ctx:JSParser.Import_moduleContext):
+        return self.visitChildren(ctx)
+
+
 
 del JSParser

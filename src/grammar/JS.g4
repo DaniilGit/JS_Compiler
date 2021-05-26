@@ -1,7 +1,7 @@
 grammar JS;
 
 program
-  : (function_declaration|statement)*
+  : (import_module|function_declaration|statement)*
   ;
 
 function_declaration
@@ -21,7 +21,7 @@ statement
   ;
 
 function_call
-  : ID L_ROUND ((argument) COMMA?)* R_ROUND SEMI?
+  : ID L_ROUND (expression COMMA?)* R_ROUND SEMI?
   ;
 
 method_call
@@ -30,12 +30,13 @@ method_call
 
 declaration
   : (LET|VAR|CONST) ID SEMI?
+  | (LET|VAR|CONST) ID ASSIGN function_call SEMI?
   | (LET|VAR|CONST) ID ASSIGN expression SEMI?
   | (LET|VAR|CONST) ID ASSIGN array SEMI?
   ;
 
 assign
-  : (ID|array_element) (ASSIGN|PLUS_ASSIGN|MINUS_ASSIGN|MULTI_ASSIGN|DIV_ASSIGN|REM_ASSIGN) (expression|array) SEMI?
+  : (ID|array_element) (ASSIGN|PLUS_ASSIGN|MINUS_ASSIGN|MULTI_ASSIGN|DIV_ASSIGN|REM_ASSIGN) (expression|array|function_call) SEMI?
   ;
 
 expression
@@ -87,7 +88,7 @@ for_step
   ;
 
 argument
-  : ID|integer_literal|string_literal|TRUE|FALSE|array_element|object_property|method_call
+  : ID|integer_literal|string_literal|TRUE|FALSE|array_element|object_property|method_call|function_call
   ;
 
 array_element
@@ -114,6 +115,10 @@ integer_literal
   : INT
   ;
 
+import_module
+  : CONST ID ASSIGN ID L_ROUND STRING R_ROUND SEMI?
+  ;
+
 CONST: 'const';
 LET: 'let';
 VAR: 'var';
@@ -127,7 +132,7 @@ ELSE: 'else';
 TRUE: 'true';
 FALSE: 'false';
 STRING: '"' ~ ["\n\r]* '"';
-ID: ([a-zA-Z_$])([0-9a-zA-Z])*;
+ID: ([a-zA-Z_$])([0-9a-zA-Z_])*;
 INT: '0' | [1-9][0-9]*;
 L_ROUND: '(';
 R_ROUND: ')';
