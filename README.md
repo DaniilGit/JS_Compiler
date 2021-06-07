@@ -22,5 +22,5 @@
   * --dump asm — вывести LLVM IR
  
 ---
-Лексический и синтаксический анализаторы написаны с помощью генератора ANTLR <https://github.com/antlr/antlr4>
+Лексический и синтаксический анализаторы написаны с помощью генератора ANTLR <https://github.com/antlr/antlr4> <br>
 Промежуточное представление кода - LLVM IR <https://llvm.org/docs/LangRef.html>
